@@ -1,0 +1,48 @@
+package com.baidu.${appname}.dal.dao.auto;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.baidu.${appname}.dal.entity.${name};
+import com.baidu.${appname}.dal.entity.${name}Example;
+import com.baidu.${appname}.dal.mapper.auto.${name}Mapper;
+import com.baidu.superhero.util.common.pagination.PageList;
+import com.baidu.superhero.util.storage.db.pagination.MyBatisPaginationUtil;
+
+@Repository
+public class Auto${name}Dao {
+
+    @Autowired
+    private ${name}Mapper mapper;
+
+    public ${name} get${name}(${primaryType} ${primaryKey}) {
+
+        return mapper.selectByPrimaryKey(${primaryKey});
+
+    }
+
+    public int add${name}(${name} model) {
+
+        return mapper.insertSelective(model);
+
+    }
+
+    public int modify${name}(${name} model) {
+
+        return mapper.updateByPrimaryKeySelective(model);
+
+    }
+
+    public int del${name}(${primaryType} ${primaryKey}) {
+
+        return mapper.deleteByPrimaryKey(${primaryKey});
+
+    }
+
+    public PageList<${name}> selectWithPage(int pageIndex, int pageSize) {
+        ${name}Example example = new ${name}Example();
+        example.setStartIndex((pageIndex - 1) * pageSize);
+        example.setPageSize(pageSize);
+        return MyBatisPaginationUtil.selectByExample(mapper, example);
+    }
+}

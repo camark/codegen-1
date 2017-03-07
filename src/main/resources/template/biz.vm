@@ -1,0 +1,67 @@
+package com.alchemystar.${appname}.biz.auto;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.alchemystar.${appname}.dal.dao.auto.Auto${name}Dao;
+import com.alchemystar.${appname}.dal.entity.${name};
+import com.alchemystar.superhero.util.common.mask.MaskToStringBuilder;
+import com.alchemystar.superhero.util.common.pagination.PageList;
+
+@Service
+public class Auto${name}Service {
+
+    private static final Logger logger = LoggerFactory.getLogger(Auto${name}Service.class);
+
+    @Autowired
+    private Auto${name}Dao dao;
+
+    public ${name} get${name}(${primaryType} ${primaryKey}) {
+
+        ${name} model = dao.get${name}(${primaryKey});
+        if (model == null) {
+            logger.error("[get${name}]delete ${name} ${primaryKey}={} fail", ${primaryKey});
+            throw new RuntimeException("GET data fail");
+        }
+        return model;
+
+    }
+
+    public void add${name}(${name} model) {
+        int success = dao.add${name}(model);
+        if (success <= 0) {
+            logger.error("[add${name}]add ${name}={} fail", MaskToStringBuilder.toString(model));
+            throw new RuntimeException("Add data fail");
+        }
+        return;
+
+    }
+
+    public void modify${name}(${name} model) {
+        int success = dao.modify${name}(model);
+        if (success <= 0) {
+            logger.error("[modify${name}]modify ${name}={} fail", MaskToStringBuilder.toString(model));
+            throw new RuntimeException("Modify data fail");
+        }
+        return;
+
+    }
+
+    public void del${name}(${primaryType} ${primaryKey}) {
+
+        int success = dao.del${name}(${primaryKey});
+        if (success <= 0) {
+            logger.error("[delete${name}]delete ${name} ${primaryKey}={} fail", ${primaryKey});
+            throw new RuntimeException("Del data fail");
+        }
+        return;
+
+    }
+
+    public PageList<${name}> query${name}WithPage(int pageIndex, int pageSize) {
+        return dao.selectWithPage(pageIndex, pageSize);
+    }
+
+}

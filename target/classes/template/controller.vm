@@ -1,0 +1,109 @@
+package com.baidu.${appname}.service.impl.auto;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.baidu.${appname}.biz.auto.Auto${name}Service;
+import com.baidu.${appname}.dal.entity.${name};
+import com.baidu.${appname}.service.api.auto.model.Auto${name}Model;
+import com.baidu.${appname}.service.api.auto.response.Auto${name}Response;
+import com.baidu.superhero.service.rest.model.BaseResponse;
+import com.baidu.superhero.util.common.Conventions;
+
+@Controller
+@RequestMapping(Conventions.SERVICES_URL_PREFIX + "/${appname}")
+public class Auto${name}Controller {
+
+    public static Logger logger = LoggerFactory.getLogger(Auto${name}Controller.class);
+
+    @Autowired
+    private Auto${name}Service service;
+
+    @RequestMapping(value = "/get/${name}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Auto${name}Response get${name}(${primaryType} ${primaryKey}) {
+
+        Auto${name}Response baseResponse = new Auto${name}Response();
+        try {
+            BeanUtils.copyProperties(service.get${name}($primaryKey), baseResponse);
+        } catch (Exception e) {
+            baseResponse.setResultCode("AUTO001");
+            baseResponse.setResultMsg("Fail:" + e.getMessage());
+            logger.error("Fail:", e);
+            return baseResponse;
+        }
+        baseResponse.setResultCode("AUTO000");
+        baseResponse.setResultMsg("SUCCESS");
+        return baseResponse;
+
+    }
+
+    @RequestMapping(value = "/add/${name}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public BaseResponse add${name}(@RequestBody Auto${name}Model model) {
+
+        BaseResponse baseResponse = new BaseResponse();
+        try {
+            ${name} record = new ${name}();
+            BeanUtils.copyProperties(model, record);
+            service.add${name}(record);
+        } catch (Exception e) {
+            baseResponse.setResultCode("AUTO001");
+            baseResponse.setResultMsg("Fail:" + e.getMessage());
+            logger.error("Fail:", e);
+            return baseResponse;
+        }
+        baseResponse.setResultCode("AUTO000");
+        baseResponse.setResultMsg("SUCCESS");
+        return baseResponse;
+    }
+
+    @RequestMapping(value = "/modify/${name}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public BaseResponse modify${name}(@RequestBody Auto${name}Model model) {
+
+        BaseResponse baseResponse = new BaseResponse();
+        try {
+            ${name} record = new ${name}();
+            BeanUtils.copyProperties(model, record);
+            service.modify${name}(record);
+        } catch (Exception e) {
+            baseResponse.setResultCode("AUTO001");
+            baseResponse.setResultMsg("Fail:" + e.getMessage());
+            logger.error("Fail:", e);
+            return baseResponse;
+        }
+        baseResponse.setResultCode("AUTO000");
+        baseResponse.setResultMsg("SUCCESS");
+        return baseResponse;
+
+    }
+
+    @RequestMapping(value = "/del/${name}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public BaseResponse del${name}(${primaryType} ${primaryKey}) {
+
+        BaseResponse baseResponse = new BaseResponse();
+        try {
+            service.del${name}(${primaryKey});
+        } catch (Exception e) {
+            baseResponse.setResultCode("AUTO001");
+            baseResponse.setResultMsg("Fail:" + e.getMessage());
+            logger.error("Fail:", e);
+            return baseResponse;
+        }
+        baseResponse.setResultCode("AUTO000");
+        baseResponse.setResultMsg("SUCCESS");
+        return baseResponse;
+
+    }
+
+}
